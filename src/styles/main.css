@@ -1,0 +1,84 @@
+/* import other css */
+@import url('./a.css');
+
+/* custom properties */
+:root{
+	--bgColor: yellowgreen;
+	--fontSize: 1rem;
+}
+
+/* custom properties set & @apply rule */
+:root{
+	--centered: {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	};
+}
+
+body{
+	background: var(--bgColor);
+}
+
+/* autoprefixed ! */
+.test{
+	transform: translateX(100px);
+}
+
+.centered{
+	@apply --centered;
+}
+
+/* calc() */
+h1{
+	font-size: calc(var(--fontSize) * 2);
+}
+
+/* custom media queries */
+@custom-media --viewport-medium (width <= 50rem);
+@media (--viewport-medium) {
+	body { font-size: calc(var(--fontSize) * 1.2); }
+}
+
+/* custom selectors : 可以方便实现ASSC 原子性的方案 */
+@custom-selector :--heading h1, h2, h3, h4, h5, h6;
+:--heading { margin-top: 0 }
+
+/**
+ * image-set function
+ * 就是浏览器利用媒体查询根据网速、像素比自行选择下载几倍图
+ */
+.foo {
+    background:
+    image-set(
+      url(../images/test.png) 1x,
+      url(../images/test-2x.png) 2x,
+      url(../images/test-3x.png) 3x
+    ) 100%;
+}
+
+.kill{
+	background: url(../images/test-3x.png)
+}
+
+/* filters */
+.blur {
+	filter: blur(4px);
+}
+
+/* system-ui font-family */
+body {
+	font-family: system-ui; 
+}
+
+/* nesting: 注意必须嵌套的时候 前面必须加 &*/
+a{
+	/*span{color:#fff;}*/
+	&:hover{color:red;}
+	& .t1{
+		color:green;
+		& i{font-style: normal;}
+	}
+	@nest span & {color:blue;}/*不建议这么用，会让你管理css时蒙逼*/
+
+}
